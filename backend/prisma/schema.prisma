@@ -4,111 +4,17 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// Configure MongoDB data source
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "mongo"
-  url      = env("DATABASE_URL")
-}
-
-model User {
-  id        String  @id @default(uuid())
-  name      String
-  email     String  @unique @index
-  phone     String  @unique @index
-  password  String
-  role      Role    @default(BUYER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
-  products  Product[] @relation(name: "VendorProducts") // Only for Vendors
-}
-
-model Category {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  subCategories SubCategory[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model SubCategory {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  String
-  products    Product[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Product {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  stock       Int
-  images      String[]
-  status      ProductStatus @default(ACTIVE)
-  vendor      User         @relation(fields: [vendorId], references: [id], name: "VendorProducts")
-  vendorId    String
-  subCategory SubCategory @relation(fields: [subCategoryId], references: [id])
-  subCategoryId String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  sales       Sale[]
-}
-
-model Order {
-  id        String  @id @default(uuid())
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String
-  products  OrderItem[]
-  total     Float
-  status    OrderStatus @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model OrderItem {
-  id        String  @id @default(uuid())
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   String
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-  quantity  Int
-}
-
-model Sale {
-  id          String  @id @default(uuid())
-  product     Product @relation(fields: [productId], references: [id])
-  productId   String
-  vendor      User    @relation(fields: [vendorId], references: [id])
-  vendorId    String
-  amount      Float
-  createdAt   DateTime @default(now())
-}
-
-model AdminDashboard {
-  id          String  @id @default(uuid())
-  admin       User    @relation(fields: [adminId], references: [id])
-  adminId     String
-  totalUsers  Int
-  totalRevenue Float
-  createdAt   DateTime @default(now())
-}
-
-model VendorDashboard {
-  id          String  @id @default(uuid())
-  vendor      User    @relation(fields: [vendorId], references: [id])
-  vendorId    String
-  totalSales  Int
-  totalRevenue Float
-  createdAt   DateTime @default(now())
-}
-
+// Enums
 enum Role {
   BUYER
   VENDOR
@@ -127,5 +33,93 @@ enum ProductStatus {
   ACTIVE
   OUT_OF_STOCK
   DISCONTINUED
+}
+
+// Model definitions with indexes
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique(map: "unique_email_index") // Unique constraint, no need for @@index
+  phone     String   @unique(map: "unique_phone_index") // Unique constraint, no need for @@index
+  password  String
+  role      Role     @default(BUYER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    String[] // Store Order IDs as Strings (no direct relation)
+  products  String[] // Store Product IDs as Strings (for vendors)
+}
+
+model Category {
+  id            String   @id @map("_id") @db.ObjectId
+  name          String   @unique(map: "unique_category_name_index") // Unique constraint, no need for @@index
+  subCategories String[] // Store SubCategory IDs as Strings
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SubCategory {
+  id          String   @id @map("_id") @db.ObjectId
+  name        String   @unique(map: "unique_subcategory_name_index") // Unique constraint, no need for @@index
+  categoryId  String   // Store Category ID as String
+  products    String[] // Store Product IDs as Strings
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id            String        @id @map("_id") @db.ObjectId
+  name          String
+  description   String
+  price         Float
+  stock         Int
+  images        String[]      // Store Image URLs or paths as Strings
+  status        ProductStatus @default(ACTIVE)
+  vendorId      String        // Store Vendor ID as String
+  subCategoryId String        // Store SubCategory ID as String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  sales         String[]      // Store Sale IDs as Strings
+}
+
+model Order {
+  id        String       @id @map("_id") @db.ObjectId
+  userId    String       // Store User ID as String
+  products  String[]     // Store Product IDs as Strings
+  total     Float
+  status    OrderStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model OrderItem {
+  id        String @id @map("_id") @db.ObjectId
+  orderId   String
+  productId String
+  quantity  Int
+}
+
+model Sale {
+  id        String   @id @map("_id") @db.ObjectId
+  productId String   // Store Product ID as String
+  vendorId  String   // Store Vendor ID as String
+  amount    Float
+  createdAt DateTime @default(now())
+}
+
+model AdminDashboard {
+  id          String  @id @map("_id") @db.ObjectId
+  adminId     String  // Store Admin ID as String
+  totalUsers  Int
+  totalRevenue Float
+  createdAt   DateTime @default(now())
+}
+
+model VendorDashboard {
+  id          String  @id @map("_id") @db.ObjectId
+  vendorId    String  // Store Vendor ID as String
+  totalSales  Int
+  totalRevenue Float
+  createdAt   DateTime @default(now())
 }
 
