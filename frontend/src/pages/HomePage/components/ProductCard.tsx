@@ -53,8 +53,8 @@ const ProductCard = ({ product }: props) => {
         </Text>
         <Button
           leftIcon={<FaShoppingCart />}
-          colorScheme="teal"
-          variant={"solid"}
+          colorScheme="orange"
+          variant={"outline"}
           width={"full"}
         >
           Add to Cart
