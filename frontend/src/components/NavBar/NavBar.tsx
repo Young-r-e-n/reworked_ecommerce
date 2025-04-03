@@ -1,7 +1,7 @@
-import React from "react";
+import LoggedOut from "./LoggedOut";
 
 const NavBar = () => {
-  return <div>NavBar</div>;
+  return <LoggedOut></LoggedOut>;
 };
 
 export default NavBar;
