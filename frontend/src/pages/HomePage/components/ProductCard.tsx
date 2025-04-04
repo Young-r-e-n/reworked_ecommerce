@@ -25,7 +25,7 @@ const ProductCard = ({ product }: props) => {
     >
       <Box height="150px" width="100%" objectFit={"cover"}>
         <Image
-          src={product.image}
+          src={product.images}
           objectFit="cover"
           width="100%"
           height="100%"
