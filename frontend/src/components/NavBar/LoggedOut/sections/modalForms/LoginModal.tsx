@@ -62,9 +62,19 @@ const LoginModal = ({ isLoginOpen, onLoginClose }: Props) => {
         password: data.password,
       });
 
-      if (res.status === 200) {
+      console.log("Login Response:", res.data);
+
+      if (res.status === 200 && res.data) {
         try {
-          localStorage.setItem(USER_DATA, JSON.stringify(res.data));
+          const userData = {
+            id: res.data?.id,
+            name: res.data?.name,
+            email: res.data?.email,
+            phone: res.data?.phone,
+            role: res.data?.role,
+          };
+
+          localStorage.setItem(USER_DATA, JSON.stringify(userData));
 
           setSuccessMessage("Login Successful!");
 
@@ -78,8 +88,11 @@ const LoginModal = ({ isLoginOpen, onLoginClose }: Props) => {
       } else {
         setErrorMessage("Invalid login credentials.");
       }
-    } catch (error) {
-      setErrorMessage("Login failed. Please check your credentials.");
+    } catch (error: any) {
+      console.error("Login Error:", error.response?.data || error.message);
+      setErrorMessage(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
