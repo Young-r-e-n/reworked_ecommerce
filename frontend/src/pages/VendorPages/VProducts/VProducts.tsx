@@ -8,11 +8,26 @@ import {
   Tbody,
   Td,
   Button,
+  Image,
 } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { api } from "../../../services/api-client";
+import { productRes } from "../../HomePage/HomePage";
 
 const VProducts = () => {
+  const [products, setProducts] = useState<productRes[]>([]);
+
+  useEffect(() => {
+    api
+      .get<productRes[]>("products")
+      .then((res) => setProducts(res.data))
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
-    <Box>
+    <Box mt={"65px"}>
       <Heading size="lg" mb={4}>
         My Products
       </Heading>
@@ -34,7 +49,7 @@ const VProducts = () => {
               </Td>
               <Td>{product.name}</Td>
               <Td>{product.price}</Td>
-              <Td>{product.stock}</Td>
+              {/* <Td>{product.stock}</Td> */}
               <Td>
                 <Button size="sm" colorScheme="blue" mr={2}>
                   Edit
