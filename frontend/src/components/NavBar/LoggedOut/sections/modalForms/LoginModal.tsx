@@ -18,6 +18,8 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "../../../../../services/api-client";
+import { USER_DATA } from "../../../../../constants/constants";
 
 interface Props {
   isLoginOpen: boolean;
@@ -47,42 +49,41 @@ const LoginModal = ({ isLoginOpen, onLoginClose }: Props) => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => console.log(data);
+  // const onSubmit = (data: FormData) => console.log(data);
 
-  // const onSubmit = async (data: FieldValues) => {
-  //   setIsLoading(true);
-  //   setErrorMessage(null);
-  //   setSuccessMessage(null);
+  const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
 
-  //   try {
-  //     const res = await api.post("/auth/login/", {
-  //       email: data.email,
-  //       password: data.password,
-  //     });
+    try {
+      const res = await api.post("auth/login", {
+        email: data.email,
+        password: data.password,
+      });
 
-  //     if (res.status === 200) {
-  //       try {
-  //         // localStorage.setItem(ACCESS_TOKEN, res.data.access);
-  //         // localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-  //         // localStorage.setItem(USER_DATA, JSON.stringify(res.data.user));
-  //       } catch (storageErr) {
-  //         setErrorMessage("Error Storing Tokens");
-  //       }
+      if (res.status === 200) {
+        try {
+          localStorage.setItem(USER_DATA, JSON.stringify(res.data));
 
-  //       setSuccessMessage("Login Successful!");
-  //       setTimeout(() => {
-  //         onLoginClose();
-  //         navigate(0);
-  //       }, 1500);
-  //     } else {
-  //       setErrorMessage("Invalid login credentials.");
-  //     }
-  //   } catch (error) {
-  //     setErrorMessage("Login failed. Please check your credentials.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+          setSuccessMessage("Login Successful!");
+
+          setTimeout(() => {
+            onLoginClose();
+            navigate(0);
+          }, 1500);
+        } catch (storageErr) {
+          setErrorMessage("Error storing user data.");
+        }
+      } else {
+        setErrorMessage("Invalid login credentials.");
+      }
+    } catch (error) {
+      setErrorMessage("Login failed. Please check your credentials.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Modal isOpen={isLoginOpen} onClose={onLoginClose}>

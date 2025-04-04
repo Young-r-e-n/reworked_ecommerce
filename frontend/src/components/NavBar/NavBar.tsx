@@ -1,9 +1,9 @@
 import LoggedIn from "./LoggedIn";
-// import LoggedOut from "./LoggedOut";
+import LoggedOut from "./LoggedOut";
 
 const NavBar = () => {
-  // return <LoggedOut></LoggedOut>;
-  return <LoggedIn></LoggedIn>;
+  return <LoggedOut></LoggedOut>;
+  // return <LoggedIn></LoggedIn>;
 };
 
 export default NavBar;
