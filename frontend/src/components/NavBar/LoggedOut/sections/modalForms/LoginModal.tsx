@@ -66,15 +66,7 @@ const LoginModal = ({ isLoginOpen, onLoginClose }: Props) => {
 
       if (res.status === 200 && res.data) {
         try {
-          const userData = {
-            id: res.data?.id,
-            name: res.data?.name,
-            email: res.data?.email,
-            phone: res.data?.phone,
-            role: res.data?.role,
-          };
-
-          localStorage.setItem(USER_DATA, JSON.stringify(userData));
+          localStorage.setItem(USER_DATA, JSON.stringify(res.data.user));
 
           setSuccessMessage("Login Successful!");
 
