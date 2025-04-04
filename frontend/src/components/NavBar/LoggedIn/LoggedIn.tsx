@@ -1,5 +1,7 @@
+import VLoggedIn from "./VLoggedIn";
+
 const loggedIn = () => {
-  return <div>loggedIn</div>;
+  return <VLoggedIn />;
 };
 
 export default loggedIn;
