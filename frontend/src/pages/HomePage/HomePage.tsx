@@ -7,7 +7,7 @@ export interface productRes {
   id: number;
   name: string;
   description: string;
-  image: string;
+  images: string;
   rating: number;
   price: number;
 }
