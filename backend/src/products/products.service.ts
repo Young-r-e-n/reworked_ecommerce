@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -17,7 +17,23 @@ export class ProductsService {
     return this.prisma.product.findUnique({ where: { id } });
   }
 
-  async updateProduct(id: string, data: any) {
+  async updateProduct(id: string, data: any, isFullUpdate = false) {
+    const existingProduct = await this.prisma.product.findUnique({ where: { id } });
+
+    if (!existingProduct) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+
+    // Optional: for PUT, enforce all required fields
+    if (isFullUpdate) {
+      const requiredFields = ['name', 'price']; // Example, customize this!
+      for (const field of requiredFields) {
+        if (!(field in data)) {
+          throw new BadRequestException(`Missing required field: ${field}`);
+        }
+      }
+    }
+
     return this.prisma.product.update({ where: { id }, data });
   }
 
