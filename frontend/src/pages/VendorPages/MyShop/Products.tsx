@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { api } from "../../../services/api-client";
 import { productRes } from "../../HomePage/HomePage";
 
-const VProducts = () => {
+const Products = () => {
   const [products, setProducts] = useState<productRes[]>([]);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const VProducts = () => {
           {products.map((product) => (
             <Tr key={product.id}>
               <Td>
-                <Image src={product.image} alt={product.name} boxSize="50px" />
+                <Image src={product.images} alt={product.name} boxSize="50px" />
               </Td>
               <Td>{product.name}</Td>
               <Td>{product.price}</Td>
@@ -66,4 +66,4 @@ const VProducts = () => {
   );
 };
 
-export default VProducts;
+export default Products;
