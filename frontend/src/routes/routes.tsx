@@ -1,11 +1,10 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
 import HomePage from "../pages/HomePage";
-import VDashboard from "../pages/VendorPages/VDashboard";
-import VWallet from "../pages/VendorPages/VWallet";
-import VProducts from "../pages/VendorPages/VProducts";
-import VOrders from "../pages/VendorPages/VOrders";
-import VMessages from "../pages/VendorPages/VMessages";
+import Dashboard from "../pages/VendorPages/Dashboard";
+import Wallet from "../pages/VendorPages/Wallet";
+import Products from "../pages/VendorPages/MyShop";
+import Orders from "../pages/VendorPages/Orders";
 
 const router = createBrowserRouter([
   {
@@ -15,11 +14,12 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
 
       // Vendor Routes
-      { path: "/vendor/dashboard", element: <VDashboard /> },
-      { path: "/vendor/messages", element: <VMessages /> },
-      { path: "/vendor/orders", element: <VOrders /> },
-      { path: "/vendor/products", element: <VProducts /> },
-      { path: "/vendor/wallet", element: <VWallet /> },
+      { path: "/vendor/dashboard", element: <Dashboard /> },
+      { path: "/vendor/orders", element: <Orders /> },
+      { path: "/vendor/myshop", element: <Products /> },
+      { path: "/vendor/wallet", element: <Wallet /> },
+      { path: "/vendor/add", element: <Wallet /> },
+      { path: "/vendor/wallet", element: <Wallet /> },
     ],
   },
 ]);
