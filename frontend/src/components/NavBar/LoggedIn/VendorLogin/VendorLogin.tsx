@@ -1,6 +1,6 @@
 import { HStack, VStack } from "@chakra-ui/react";
-import VRightSection from "./VendorRightSection";
-import VleftSection from "./VendorLeftSection";
+import VendorRightSection from "./VendorRightSection";
+import VendorLeftSection from "./VendorLeftSection";
 
 export interface VendorMenu {
   label: string;
@@ -30,10 +30,10 @@ const VendorLogin = () => {
         boxShadow={"2xl"}
       >
         {/* Left Section */}
-        <VleftSection />
+        <VendorLeftSection />
 
         {/* Right Section */}
-        <VRightSection items={VendorMenuItems} />
+        <VendorRightSection items={VendorMenuItems} />
       </HStack>
     </VStack>
   );
