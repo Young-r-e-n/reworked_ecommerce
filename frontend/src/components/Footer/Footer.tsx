@@ -100,7 +100,7 @@ const Footer = () => {
         </Stack>
       </Flex>
       <Box textAlign="center" py={4} fontSize="sm" color="gray.500">
-        &copy; {new Date().getFullYear()} ShopMate. All rights reserved.
+        &copy; {new Date().getFullYear()} DiDi. All rights reserved.
       </Box>
     </Box>
   );
