@@ -1,6 +1,6 @@
 import { HStack, VStack } from "@chakra-ui/react";
-import VRightSection from "./VRightSection";
-import VleftSection from "./VLeftSection";
+import VRightSection from "./VendorRightSection";
+import VleftSection from "./VendorLeftSection";
 
 export interface VendorMenu {
   label: string;
@@ -14,7 +14,7 @@ export const VendorMenuItems: VendorMenu[] = [
   { label: "Wallet", uri: "/vendor/wallet" },
 ];
 
-const VLoggedIn = () => {
+const VendorLogin = () => {
   return (
     <VStack w={"full"} spacing={0} overflow={"visible"}>
       <HStack
@@ -39,4 +39,4 @@ const VLoggedIn = () => {
   );
 };
 
-export default VLoggedIn;
+export default VendorLogin;

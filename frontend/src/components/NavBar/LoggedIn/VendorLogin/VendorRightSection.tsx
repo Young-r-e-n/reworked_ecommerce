@@ -1,12 +1,12 @@
 import { Button, Flex, List, ListItem } from "@chakra-ui/react";
 import { NavLink } from "react-router";
-import { VendorMenu } from "./VLoggedIn";
+import { VendorMenu } from "./VendorLogin";
 
 interface props {
   items: VendorMenu[];
 }
 
-const VRightSection = ({ items }: props) => {
+const VendorRightSection = ({ items }: props) => {
   return (
     <Flex alignItems="center" gap={2}>
       <List gap={2} display={{ base: "none", md: "flex" }}>
@@ -29,4 +29,4 @@ const VRightSection = ({ items }: props) => {
   );
 };
 
-export default VRightSection;
+export default VendorRightSection;
