@@ -1,7 +1,7 @@
-import VLoggedIn from "./VLoggedIn";
+import VendorLogin from "./VendorLogin";
 
 const loggedIn = () => {
-  return <VLoggedIn />;
+  return <VendorLogin />;
 };
 
 export default loggedIn;
