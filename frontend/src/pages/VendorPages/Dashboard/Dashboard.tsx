@@ -63,7 +63,7 @@ const categoryDistribution: CategoryData[] = [
 
 const COLORS = ["#3182ce", "#63b3ed", "#90cdf4"];
 
-const VDashboard: React.FC = () => {
+const Dashboard: React.FC = () => {
   const cardBg = useColorModeValue("white", "gray.800");
   const [selectedMonth, setSelectedMonth] = useState<string>("May");
 
@@ -195,4 +195,4 @@ const StatCard: React.FC<StatCardProps> = ({ label, value }) => {
   );
 };
 
-export default VDashboard;
+export default Dashboard;

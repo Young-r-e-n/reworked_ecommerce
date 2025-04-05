@@ -9,7 +9,7 @@ export interface VendorMenu {
 
 export const VendorMenuItems: VendorMenu[] = [
   { label: "Dashboard", uri: "/vendor/dashboard" },
-  { label: "Products", uri: "/vendor/products" },
+  { label: "My Shop", uri: "/vendor/myshop" },
   { label: "Orders", uri: "/vendor/orders" },
   { label: "Wallet", uri: "/vendor/wallet" },
 ];
